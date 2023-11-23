@@ -1,5 +1,5 @@
 from app import app
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 import numpy as np
 import os
 
@@ -20,6 +20,8 @@ def predict_song(data):
     ]
 
     prediction = model.predict(np.array([audio_features]))
+
+    prediction = (prediction > 0.5)
 
     print(prediction)
 

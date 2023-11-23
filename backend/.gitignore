@@ -1,1 +1,5 @@
 .venv
+.cache
+app/__pycache__
+controllers/__pycache__
+routes/__pycache__
