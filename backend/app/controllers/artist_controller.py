@@ -62,10 +62,9 @@ def calculate_all_artists_followers_popularity_difference():
             diff_popularity = followers_popularity_list[i]['popularity'] - followers_popularity_list[i - 1]['popularity']
 
             difference_list.append({
-                artist_id: {
-                    "followers_difference": diff_followers,
-                    "popularity_difference": diff_popularity,
-                }
+                "id": artist_id,
+                "followers_difference": diff_followers,
+                "popularity_difference": diff_popularity,
             })
 
     return difference_list
