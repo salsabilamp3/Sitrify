@@ -7,6 +7,18 @@ script_directory = os.path.dirname(os.path.realpath(__file__))
 model_path = os.path.join(script_directory, 'best_model.h5')
 model = load_model(model_path)
 
+# def main():
+#     data = {
+#         "acousticness": 0.02,
+#         "danceability": 0.741,
+#         "energy": 0.626,
+#         "speechiness": 0.0886,
+#         "instrumentalness": 0,
+#         "liveness": 0.0828,
+#         "loudness": -4.826,
+#         "valence": 0.706
+#     }
+#     predict_song(data)
 def predict_song(data):
     audio_features = [
         data["acousticness"],

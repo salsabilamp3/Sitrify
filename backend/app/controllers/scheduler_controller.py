@@ -1,5 +1,3 @@
-from apscheduler.schedulers.background import BackgroundScheduler
-import time
 from datetime import datetime
 from flask_pymongo import PyMongo
 from app import app
@@ -101,25 +99,3 @@ def retrieveArtistInfo():
 
     print('Informasi artist berhasil diperbarui')
 
-def task():
-    # top50Global = retrieveTop50Global()
-    # saveCharts(top50Global)
-    # retrieveArtistInfo()
-    print('Scheduler berjalan')
-
-# Create a BackgroundScheduler instance
-scheduler = BackgroundScheduler()
-
-# Add the task to run every day at 00:00
-scheduler.add_job(task, 'cron', hour=18, minute=20)
-
-# Start the scheduler in the background
-scheduler.start()
-
-# This is just to keep the program running while the scheduler is active
-try:
-    while True:
-        time.sleep(1)  # You can adjust the sleep duration as needed
-except (KeyboardInterrupt, SystemExit):
-    # Shut down the scheduler gracefully if the program is interrupted
-    scheduler.shutdown()
