@@ -18,7 +18,7 @@ def task_scheduler():
     print('Scheduler berjalan')
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=task_scheduler, trigger="cron", hour=0 , minute=0)
+scheduler.add_job(func=task_scheduler, trigger="cron", hour=9 , minute=0)
 scheduler.start()
 
 app = Flask(__name__)
