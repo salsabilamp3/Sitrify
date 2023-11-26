@@ -22,10 +22,17 @@ const DaftarArtisPage = () => {
           }
           setArtistData(tempArr);
         });
-      const load = await fetch(``);
     } catch (error) {
       console.error("Error fetching artist data:", error.message);
-    } finally {
+    }
+  };
+
+  useEffect(() => {
+    GetDataArtist();
+  }, []);
+
+  useEffect(() => {
+    if (artistData.length > 0) {
       datatable = new simpleDatatables.DataTable("#myTable", {
         pagination: true,
       });
@@ -34,11 +41,7 @@ const DaftarArtisPage = () => {
         datatable.refresh();
       });
     }
-  };
-
-  useEffect(() => {
-    GetDataArtist();
-  }, []);
+  }, [artistData]);
 
   return (
     <div className="flex">

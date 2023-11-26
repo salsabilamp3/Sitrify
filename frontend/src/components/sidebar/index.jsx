@@ -14,7 +14,7 @@ const SideBar = ({ page }) => {
 
   return (
     <div className="h-screen w-screen flex flex-nowrap">
-      <div className="z-10 p-3 pr-6  w-full fixed">
+      <div className="z-10 p-3 pr-6 w-full fixed">
         <div className="flex-none">
           <AvatarProfile />
         </div>
