@@ -1,37 +1,28 @@
 import React, { useEffect, useState } from "react";
-import SideBar from "../components/sidebar";
-import AvatarProfile from "../components/profile";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import "simple-datatables";
 
 const DaftarArtisPage = () => {
   const [artistData, setArtistData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [follPopDifference, setFollPopDifferenceData] = useState([]);
   let datatable;
 
   const GetDataArtist = async () => {
     try {
       setIsLoading(true);
-      await fetch(`http://localhost:5000/api/artist`)
+      await fetch(`http://localhost:5000/api/artist/latest`)
         .then(async (resp) => {
           return await resp.json();
         })
         .then(async (item) => {
           console.log(item);
           const tempArr = [];
-          for (var i = 0; i < 20; i++) {
-            tempArr.push(item.artists[i]);
+          for (var i = 0; i < 100; i++) {
+            tempArr.push(item[i]);
           }
           setArtistData(tempArr);
         });
-      // const resp = await chartResponse.json();
-
-      const follPopDifferenceResponse = await fetch(
-        `http://localhost:5000/api/artist/followers-popularity-difference/all`
-      );
-      const follPopDifferenceData = await follPopDifferenceResponse.json();
-      setFollPopDifferenceData(follPopDifferenceData);
+      const load = await fetch(``);
     } catch (error) {
       console.error("Error fetching artist data:", error.message);
     } finally {
@@ -57,17 +48,12 @@ const DaftarArtisPage = () => {
             Daftar Artis
           </p>
         </div>
-        <div className="pl-4 ">
-          {" "}
-          {/* add h-screen overflow-y-auto buat bisa scrolling */}
+        <div className="pl-4">
           <div className="card shadow-xl bg-[#453158]">
             <div className="card-body p-0 bg-[#453158]">
               {isLoading && (
                 <div className="w-full flex items-center justify-center text-white">
-                  <AiOutlineLoading3Quarters
-                    className="animate-spin
-                  mr-2"
-                  />
+                  <AiOutlineLoading3Quarters className="animate-spin mr-2" />
                   Loading ...
                 </div>
               )}
@@ -77,7 +63,6 @@ const DaftarArtisPage = () => {
                 }`}
               >
                 <table id="myTable" className="table bg-[#453158]">
-                  {/* head */}
                   <thead className="text-white bg-[#29163a] text-sm">
                     <tr>
                       <th>
@@ -96,15 +81,15 @@ const DaftarArtisPage = () => {
                   </thead>
                   <tbody style={{ color: "#453158" }}>
                     {artistData?.map((artist, index) => (
-                      <tr className="">
+                      <tr className="" key={index}>
                         <td>{index + 1}</td>
                         <td>
                           <div className="flex items-center space-x-3">
                             <div className="avatar">
                               <div className="mask mask-squircle w-12 h-12">
                                 <img
-                                  src="/image/profile.jpg"
-                                  alt="Avatar Tailwind CSS Component"
+                                  src={artist.image}
+                                  alt={`Avatar of ${artist.name}`}
                                 />
                               </div>
                             </div>
@@ -112,12 +97,12 @@ const DaftarArtisPage = () => {
                           </div>
                         </td>
                         <td>
-                          <p>899.876.999</p>
-                          <span className="text-green-600">+41.500</span>
+                          <p>{artist.followers}</p>
+                          <span className="text-green-600 text-center">{`+${artist.followers_difference}`}</span>
                         </td>
                         <td>
-                          <p>95</p>
-                          <span className="text-red-600">-2</span>
+                          <p>{artist.popularity}</p>
+                          <span className="text-red-600">{`${artist.popularity_difference}`}</span>
                         </td>
                       </tr>
                     ))}
