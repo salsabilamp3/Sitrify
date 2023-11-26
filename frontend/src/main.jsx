@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import PrediksiPage from "./pages/prediksiPage.jsx";
 import ChartsPage from "./pages/chartsPage.jsx";
 import DaftarArtisPage from "./pages/daftarArtisPage.jsx";
+import SideBar from "./components/sidebar/index.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,15 +15,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/prediksi",
-    element: <PrediksiPage />,
+    element: <SideBar page={<PrediksiPage />} />,
   },
   {
     path: "/charts",
-    element: <ChartsPage />,
+    element: <SideBar page={<ChartsPage />} />,
   },
   {
     path: "/daftar-artis",
-    element: <DaftarArtisPage />,
+    element: <SideBar page={<DaftarArtisPage />} />,
+  },
+  {
+    path: "/sidebar",
+    element: <SideBar page={<DaftarArtisPage />} />,
   },
 ]);
 

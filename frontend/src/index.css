@@ -80,3 +80,19 @@ button:hover {
     background-color: var(--button-bg-color-dark);
   }
 }
+
+thead {
+  background: #29163a;
+}
+table {
+  border-collapse: separate;
+}
+.datatable-wrapper {
+  color: white;
+}
+.datatable-selector,
+.datatable-input {
+  background-color: #29163a;
+  border-radius: 12px;
+  margin: 0px 10px 0px 0px;
+}

@@ -7,37 +7,32 @@ const PrediksiPage = () => {
   useEffect(() => {});
 
   return (
-    <div className="h-screen w-screen flex">
-      <div className="w-1/4 flex flex-col gap-3 items-center">
-        <SideBar />
-      </div>
-      <div className="w-3/4 flex flex-col gap-3 p-5">
-        <AvatarProfile />
+    <div className="flex">
+      <div className="w-full flex flex-col gap-3 p-5">
         <div className="content-start flex">
           <p className="font-bold text-3xl text-white pl-4 pb-4">
             Prediksi Popularitas Lagu
           </p>
         </div>
         <div className="pl-4">
-          <div className="card bg-base-100 shadow-xl">
-            <div className="card-body p-0">
-              <h2 className="card-title pb-2">Daftar Lagu</h2>
+          <div className="card bg-[#453158] shadow-xl">
+            <div className="card-body p-0 bg-[#453158]">
+              <h2 className="card-title pb-2 text-white">Daftar Lagu</h2>
               <div className="bg-white overflow-x-auto ">
-                <table className="table">
+                <table cellPadding={0} cellSpacing={0} className="table">
                   {/* head */}
                   <thead>
-                    <tr>
+                    <tr className="text-white">
                       <th>#</th>
                       <th>Judul Lagu</th>
                       <th>Tanggal Rilis</th>
                       <th>Aksi</th>
-                      <th></th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="bg-[#453158]">
                     {/* row 1 */}
-                    <tr>
-                      <td></td>
+                    <tr className="text-white">
+                      <td>1</td>
                       <td>
                         <div className="flex items-center space-x-3">
                           <div className="avatar">
