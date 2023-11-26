@@ -30,7 +30,24 @@ app.register_blueprint(auth_route, url_prefix='/api')
 app.register_blueprint(user_route, url_prefix='/api')
 app.register_blueprint(artist_route, url_prefix='/api')
 app.register_blueprint(charts_route, url_prefix='/api')
-app.register_blueprint(songs_route, url_prefix='/api')
+
+def main():
+    # data = {
+    #     "acousticness": 0.256,
+    #     "danceability": 0.75,
+    #     "energy": 0.733,
+    #     "speechiness": 0.0319,
+    #     "instrumentalness": 0,
+    #     "liveness": 0.114,
+    #     "loudness": -3.18,
+    #     "valence": 0.844
+    # }
+    # predict_song(data)
+
+    charts = retrieveTop50Global()
+    saveCharts(charts)
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
+    # main()
