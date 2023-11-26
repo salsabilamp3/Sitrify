@@ -18,7 +18,7 @@ def get_artist_by_id(artist_id):
 
 def get_todays_artists():
     artists_collection = mongo.db.artists
-    all_artists_data = list(artists_collection.find({}, {'id': 1, 'name': 1, 'followers_popularity': 1}))
+    all_artists_data = list(artists_collection.find({}, {'id': 1, 'name': 1, 'image': 1, 'followers_popularity': 1}))
 
     difference_list = []
 
@@ -35,6 +35,7 @@ def get_todays_artists():
     for artist_data in top100_artists_data:
         artist_id = artist_data['id']
         name = artist_data['name']
+        image = artist_data['image']
         followers_popularity_list = artist_data.get('followers_popularity', [])
 
         # Check if there are enough data points
@@ -54,6 +55,7 @@ def get_todays_artists():
         difference_list.append({
             "id": artist_id,
             "name": name,
+            "image": image,
             "popularity": popularity,
             "popularity_difference": popularity_difference,
             "followers": followers,
