@@ -24,7 +24,7 @@ scheduler.start()
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/SitrifyDB'
 mongo = PyMongo(app)
-# CORS(app)
+CORS(app)
 
 app.register_blueprint(auth_route, url_prefix='/api')
 app.register_blueprint(user_route, url_prefix='/api')
