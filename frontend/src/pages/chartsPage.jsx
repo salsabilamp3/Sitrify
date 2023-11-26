@@ -83,14 +83,17 @@ const ChartsPage = () => {
                                   // "new" case
                                   return (
                                     <span className="badge badge-info badge-sm ml-1">
-                                      New
+                                      NEW
                                     </span>
                                   );
-                                } else if (song.ranking_difference === "0") {
+                                } else if (
+                                  song.ranking_difference === 0 ||
+                                  song.ranking_difference === "0"
+                                ) {
                                   // "0" case
                                   return (
                                     <span className="badge badge-ghost badge-sm ml-1">
-                                      No Change
+                                      —
                                     </span>
                                   );
                                 } else if (song.ranking_difference === "-") {
@@ -105,7 +108,7 @@ const ChartsPage = () => {
                                   const isPositive =
                                     parseInt(song.ranking_difference) > 0;
                                   const badgeClass = isPositive
-                                    ? "badge-success text-[#28926b]"
+                                    ? "badge-success text-green-900"
                                     : "badge-error text-[#8f0404]";
                                   const arrowIcon = isPositive ? (
                                     <FaArrowUp />
@@ -124,7 +127,6 @@ const ChartsPage = () => {
                               })()}
                             </div>
                           </td>
-
                           <td>
                             <div className="flex items-center space-x-3">
                               <div className="avatar">
