@@ -1,4 +1,3 @@
-import schedule
 from datetime import datetime
 from flask_pymongo import PyMongo
 from app import app
@@ -43,6 +42,7 @@ def retrieveTop50Global():
             'danceability': audio_features['danceability'],
             'energy': audio_features['energy'],
             'instrumentalness': audio_features['instrumentalness'],
+            'speechiness': audio_features['speechiness'],
             'liveness': audio_features['liveness'],
             'loudness': audio_features['loudness'],
             'valence': audio_features['valence']
@@ -97,4 +97,5 @@ def retrieveArtistInfo():
         updated_artist = mongo.db.artists.find_one({'id': artist_id}, {'_id': 0})
         updated_artist_data.append(updated_artist)
 
-    return updated_artist_data
+    print('Informasi artist berhasil diperbarui')
+

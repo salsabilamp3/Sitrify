@@ -2,6 +2,7 @@ from flask_pymongo import PyMongo
 from app import app
 from flask import jsonify, request
 from bson import ObjectId
+from datetime import datetime
 
 mongo = PyMongo(app)
 
@@ -14,6 +15,52 @@ def get_artist_by_id(artist_id):
     artists_collection = mongo.db.artists
     artist_data = artists_collection.find_one({'_id': ObjectId(artist_id)}, {'_id': 0})
     return artist_data
+
+def get_todays_artists():
+    artists_collection = mongo.db.artists
+    all_artists_data = list(artists_collection.find({}, {'id': 1, 'name': 1, 'followers_popularity': 1}))
+
+    difference_list = []
+
+    # Check if there are enough artists
+    if len(all_artists_data) < 100:
+        return difference_list  # Not enough artists to calculate the difference
+
+    # Sort the list based on popularity for each artist for the latest timestamp
+    all_artists_data.sort(key=lambda x: x.get('followers_popularity', [])[-1].get('popularity', 0), reverse=True)
+
+    # Take the top 100 artists
+    top100_artists_data = all_artists_data[:100]
+
+    for artist_data in top100_artists_data:
+        artist_id = artist_data['id']
+        name = artist_data['name']
+        followers_popularity_list = artist_data.get('followers_popularity', [])
+
+        # Check if there are enough data points
+        if len(followers_popularity_list) < 2:
+            continue  # Skip this artist if there is not enough data
+
+        # Sort the list by timestamp in ascending order
+        followers_popularity_list.sort(key=lambda x: datetime.strptime(x['timestamp'], '%Y-%m-%d'))
+
+        followers = followers_popularity_list[-1]['followers']
+        popularity = followers_popularity_list[-1]['popularity']
+
+        # Calculate the difference in followers and popularity based on timestamps
+        followers_difference = followers - followers_popularity_list[-2]['followers']
+        popularity_difference = popularity - followers_popularity_list[-2]['popularity']
+
+        difference_list.append({
+            "id": artist_id,
+            "name": name,
+            "popularity": popularity,
+            "popularity_difference": popularity_difference,
+            "followers": followers,
+            "followers_difference": followers_difference,
+        })
+
+    return difference_list
 
 # Menghitung selisih popularity dan followers berdasarkan id
 def calculate_followers_popularity_difference(artist_id):
@@ -62,10 +109,9 @@ def calculate_all_artists_followers_popularity_difference():
             diff_popularity = followers_popularity_list[i]['popularity'] - followers_popularity_list[i - 1]['popularity']
 
             difference_list.append({
-                artist_id: {
-                    "followers_difference": diff_followers,
-                    "popularity_difference": diff_popularity,
-                }
+                "id": artist_id,
+                "followers_difference": diff_followers,
+                "popularity_difference": diff_popularity,
             })
 
     return difference_list
