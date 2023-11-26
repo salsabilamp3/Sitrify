@@ -47,6 +47,7 @@ function App() {
       if (response.ok) {
         // Login berhasil, lakukan navigasi atau tindakan selanjutnya
         console.log("Login berhasil:", data);
+        localStorage.setItem("id_artist", data.user.id_artist)
         navigate("/prediksi");
       } else {
         // Login gagal, tampilkan pesan kesalahan
