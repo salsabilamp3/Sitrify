@@ -1,11 +1,29 @@
 from flask_pymongo import PyMongo
 from app import app
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import numpy as np
+import pandas as pd
 import os
 from flask import jsonify
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+from sklearn.preprocessing import StandardScaler
+
+# Splitting the dataset into the Training set and Test set
+def preprocessing_Standard(path):
+    df = pd.read_csv(path)
+    df = df.drop(['track_id'], axis=1)
+    df = df.drop(['track'], axis=1)
+    df = df.drop(['artist'], axis=1)
+    # process the artist into a number
+    X = df.iloc[:, :-1].values
+    y = df.iloc[:, -1].values
+    # Splitting the dataset into the Training set and Test set
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+    return X_train
+
+
 
 mongo = PyMongo(app)
 
@@ -13,7 +31,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="6301e01d6e
                                                               client_secret="b72c6f398c684d0ca159f8d3d8c68f67"))
 
 script_directory = os.path.dirname(os.path.realpath(__file__))
-model_path = os.path.join(script_directory, 'best_model.h5')
+model_path = os.path.join(script_directory, 'best_model_v3.h5')
 model = load_model(model_path)
 
 def get_all_artists_songs(id_artist):
@@ -48,17 +66,26 @@ def get_song_audio_features(id_song):
 
 def predict_song(data):
     audio_features = [
-        data["acousticness"],
         data["danceability"],
-        data["speechiness"],
         data["energy"],
+        data["loudness"],
+        data["speechiness"],
+        data["acousticness"],
         data["instrumentalness"],
         data["liveness"],
-        data["loudness"],
         data["valence"]
     ]
+    # Assuming preprocessing_Standard is a function to load the dataset, replace it with your actual preprocessing logic
+    Standarization_reference = preprocessing_Standard('dataset.csv')
+    scaler = StandardScaler()
+    scaler.fit(Standarization_reference)
+    
+    # Use the provided scaler to transform the data
+    audio_features = np.array(audio_features).reshape(1, -1)
+    audio_features = scaler.transform(audio_features)
 
-    prediction = model.predict(np.array([audio_features]))
+    prediction = model.predict(audio_features)
+    print("prediction: ", prediction)
 
     prediction = (prediction > 0.5)
 
