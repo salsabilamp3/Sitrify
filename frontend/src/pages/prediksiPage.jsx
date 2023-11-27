@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import SideBar from "../components/sidebar";
-import AvatarProfile from "../components/profile";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import "simple-datatables";
 
 const PrediksiPage = () => {
-  const [id_artist, setIdArtist] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [songsData, setSongsData] = useState([]);
   const [predictResult, setPredictResult] = useState("");
+  let datatable;
 
   useEffect(() => {
     const id = localStorage.getItem("id_artist");
@@ -29,12 +28,25 @@ const PrediksiPage = () => {
       console.log(songsData.songs);
     } catch (error) {
       console.error("Error fetching chart data:", error.message);
-    } finally {
+    } 
+    finally {
       setTimeout(() => {
         setIsLoading(false);
       }, 1500);
     }
   }
+
+  // useEffect(() => {
+  //   if (songsData.length > 0) {
+  //     datatable = new simpleDatatables.DataTable("#songsTable", {
+  //       pagination: true,
+  //     });
+  //     datatable.on("datatable.init", () => {
+  //       setIsLoading(false);
+  //       datatable.refresh();
+  //     });
+  //   }
+  // }, [songsData]);
 
   const formatDate = (inputDate) => {
     const date = new Date(inputDate);
@@ -42,9 +54,10 @@ const PrediksiPage = () => {
     return new Intl.DateTimeFormat('id-ID', options).format(date);
   };
 
-  const handlePredict = async () => {
+  const handlePredict = async (id_song) => {
+    console.log("id_song:", id_song);
     try {
-      const response = await fetch(`http://localhost:5000/api/predict/${id_artist}`);
+      const response = await fetch(`http://localhost:5000/api/song/predict/${id_song}`);
       const data = await response.json();
       if (response.ok) {
         setPredictResult(data.prediction);
@@ -76,7 +89,7 @@ const PrediksiPage = () => {
                     Loading ...
                   </div>
                 ) : (
-                <table cellPadding={0} cellSpacing={0} className="table rounded-md border-separate datatable">
+                <table id="songsTable" cellPadding={0} cellSpacing={0} className="table rounded-md border-separate">
                   {/* head */}
                   <thead className="text-white bg-[#29163a] text-sm">
                     <tr>
@@ -110,16 +123,18 @@ const PrediksiPage = () => {
                           {" "}
                           <button
                             className="btn btn-primary btn-sm"
-                            onClick={() =>
+                            onClick={() =>{
+                              handlePredict(song.id_song);
                               document
-                                .getElementById("modal_prediksi")
+                                .getElementById(`modal_prediksi_${song.id_song}`)
                                 .showModal()
+                              }
                             }
                           >
                             Prediksi
                           </button>
                           {/* Modal hasil prediksi */}
-                          <dialog id="modal_prediksi" className="modal">
+                          <dialog id={`modal_prediksi_${song.id_song}`} className="modal">
                             <div
                               className="modal-box"
                               style={{
@@ -145,20 +160,20 @@ const PrediksiPage = () => {
                                   <div className="avatar">
                                     <div className="mask mask-squircle w-12 h-12">
                                       <img
-                                        src="/image/profile.jpg"
-                                        alt="Avatar Tailwind CSS Component"
+                                        src={song.image}
+                                        alt={song.title}
                                       />
                                     </div>
                                   </div>
                                   <div>
                                     <p className="text-md">
-                                      Zemlak, Daniel and Leannon
+                                      {song.title}
                                     </p>
                                   </div>
                                 </div>
                               </div>
                               <h3 className="font-bold text-3xl text-center p-10 ">
-                                Lagu akan Hits!
+                                {predictResult === true ? "Lagu akan Hits!" : "Lagu tidak akan Hits."}
                               </h3>
                             </div>
                           </dialog>

@@ -18,13 +18,13 @@ def task_scheduler():
     print('Scheduler berjalan')
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=task_scheduler, trigger="cron", hour=0 , minute=0)
+scheduler.add_job(func=task_scheduler, trigger="cron", hour=12 , minute=26)
 scheduler.start()
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/SitrifyDB'
 mongo = PyMongo(app)
-CORS(app)
+CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
 
 app.register_blueprint(auth_route, url_prefix='/api')
 app.register_blueprint(user_route, url_prefix='/api')
