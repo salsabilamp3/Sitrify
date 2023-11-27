@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.controllers.user_controller import create_user, get_user, get_all_users
+from app.controllers.user_controller import create_user, get_user, get_all_users, get_user_by_id
 
 user_route = Blueprint('user_route', __name__, url_prefix='/api')
 
@@ -23,3 +23,11 @@ def get_user_by_username(username):
 def get_users():
     users = get_all_users()
     return jsonify(users)
+
+@user_route.route('/user/profile/<id_artist>', methods=['GET'])
+def get_user_by_id_artist(id_artist):
+    user = get_user_by_id(id_artist)
+    if user:
+        return jsonify({"name": user['name'], "image": user['image']})
+    else:
+        return jsonify({"message": "User not found"}), 404

@@ -1,14 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const AvatarProfile = () => {
+  const [profile, setProfile] = useState([]);
+  useEffect(() => {
+    const id = localStorage.getItem("id_artist");
+    GetDataUser(id);
+  }, []);
+
+  const GetDataUser = async (id_artist) => {
+    const response = await fetch(`http://localhost:5000/api/user/profile/${id_artist}`);
+    const data = await response.json();
+    setProfile(data);
+  }
+
   return (
     <div className="content-end flex">
       <div className="flex justify-between ml-auto">
-        <p className="text-white pr-2 pt-2">Taylor Swift</p>
+        <p className="text-white pr-2 pt-2">{profile.name}</p>
         <div className="dropdown dropdown-end">
           <img
             className="w-10 h-10 rounded-full border-2"
-            src="/image/profile.jpg"
+            src={profile.image}
             alt=""
             tabIndex={0}
           />

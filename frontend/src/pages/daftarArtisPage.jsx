@@ -105,7 +105,11 @@ const DaftarArtisPage = () => {
                         </td>
                         <td>
                           <p>{artist.popularity}</p>
-                          <span className="text-red-600">{`${artist.popularity_difference}`}</span>
+                          {artist.popularity_difference >= 0 ? (
+                            <span className="text-green-600">{`+${artist.popularity_difference}`}</span>
+                          ): (
+                            <span className="text-red-600">{`-${artist.popularity_difference}`}</span>
+                          )}
                         </td>
                       </tr>
                     ))}

@@ -22,3 +22,8 @@ def get_user(username):
     collection = mongo.db.users
     user = collection.find_one({'username': username})
     return user
+
+def get_user_by_id(id_artist):
+    collection = mongo.db.artists
+    user = collection.find_one({'id': id_artist})
+    return user
