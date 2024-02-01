@@ -1,5 +1,5 @@
 # Sitrify
-Prototype untuk mata kuliah Sistem Informasi
+Prototype untuk mata kuliah Sistem Informasi. Back-End dibuat dengan Python, dan Front-End dibuat dengan RreactJS.
 
 Tampilan setelah login
 ![image](https://github.com/salsabilamp3/Sitrify/assets/95154453/ab4834a6-f841-4067-9685-ca85e7332cd1)
